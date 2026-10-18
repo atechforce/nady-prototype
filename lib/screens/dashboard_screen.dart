@@ -5,6 +5,7 @@ import 'contacts_screen.dart';
 import 'education_screen.dart';
 import 'profile_screen.dart';
 import 'monitoring_screen.dart';
+import 'fcm_test_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -31,7 +32,13 @@ class DashboardScreen extends StatelessWidget {
         title: const Text('NaDy',
             style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
-      ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications_active_outlined),
+            onPressed: () => _go(context, const FcmTestScreen()),
+    ),
+  ],
+),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

@@ -14,6 +14,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
     final name = TextEditingController();
     final relation = TextEditingController();
     final phone = TextEditingController();
+    final fcmToken = TextEditingController();
 
     showDialog(
       context: context,
@@ -54,6 +55,16 @@ class _ContactsScreenState extends State<ContactsScreen> {
                   return null;
                 },
               ),
+              const SizedBox(height: 8),
+              TextFormField(
+                controller: fcmToken,
+                decoration: const InputDecoration(
+                  labelText: 'FCM Token perangkat kontak (opsional)',
+                  helperText:
+                      'Isi agar kontak ini menerima notifikasi push saat kamu butuh bantuan.',
+                  helperMaxLines: 2,
+                ),
+              ),
             ],
           ),
         ),
@@ -64,11 +75,13 @@ class _ContactsScreenState extends State<ContactsScreen> {
           FilledButton(
             onPressed: () {
               if (!formKey.currentState!.validate()) return;
+              final tokenValue = fcmToken.text.trim();
               setState(() {
                 EmergencyContact.all.add(EmergencyContact(
                   name: name.text.trim(),
                   relation: relation.text.trim(),
                   phone: phone.text.trim(),
+                  fcmToken: tokenValue.isEmpty ? null : tokenValue,
                 ));
               });
               Navigator.pop(ctx);
@@ -140,7 +153,39 @@ class _ContactsScreenState extends State<ContactsScreen> {
                     title: Text(c.name,
                         style:
                             const TextStyle(fontWeight: FontWeight.w600)),
-                    subtitle: Text('${c.relation} • ${c.phone}'),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('${c.relation} • ${c.phone}'),
+                        const SizedBox(height: 2),
+                        Row(
+                          children: [
+                            Icon(
+                              c.fcmToken != null
+                                  ? Icons.notifications_active
+                                  : Icons.notifications_off_outlined,
+                              size: 13,
+                              color: c.fcmToken != null
+                                  ? Colors.green
+                                  : Colors.grey,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              c.fcmToken != null
+                                  ? 'Notifikasi aktif'
+                                  : 'Notifikasi belum diatur',
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: c.fcmToken != null
+                                    ? Colors.green
+                                    : Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete_outline),
                       onPressed: () => _delete(i),
