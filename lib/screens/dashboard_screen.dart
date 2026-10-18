@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/feature_card.dart';
+import 'chatbot_screen.dart';
+import 'contacts_screen.dart';
 import 'education_screen.dart';
 import 'placeholder_screen.dart';
 import 'profile_screen.dart';
@@ -14,14 +16,14 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = <(IconData, String, String, Widget)>[
-      (Icons.person, 'Profil', 'Data pengguna', const ProfileScreen()),
-      (Icons.menu_book, 'Edukasi', 'Materi anxiety', const EducationScreen()),
-      (Icons.chat_bubble, 'Chatbot', 'Tanya NaDy (demo)',
-          const PlaceholderScreen(title: 'Chatbot')),
-      (Icons.contacts, 'Kontak Darurat', 'Orang terdekat',
-          const PlaceholderScreen(title: 'Kontak Darurat')),
-      (Icons.monitor_heart, 'Sesi Monitoring', 'Simulasi sesi',
-          const PlaceholderScreen(title: 'Sesi Monitoring')),
+    (Icons.person, 'Profil', 'Data pengguna', const ProfileScreen()),
+    (Icons.menu_book, 'Edukasi', 'Materi anxiety', const EducationScreen()),
+    (Icons.chat_bubble, 'Chatbot', 'Tanya NaDy (demo)',
+        const ChatbotScreen()),
+    (Icons.contacts, 'Kontak Darurat', 'Orang terdekat',
+        const ContactsScreen()),
+    (Icons.monitor_heart, 'Sesi Monitoring', 'Simulasi sesi',
+        const PlaceholderScreen(title: 'Sesi Monitoring')),
     ];
 
     return Scaffold(
