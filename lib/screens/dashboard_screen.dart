@@ -3,8 +3,8 @@ import '../widgets/feature_card.dart';
 import 'chatbot_screen.dart';
 import 'contacts_screen.dart';
 import 'education_screen.dart';
-import 'placeholder_screen.dart';
 import 'profile_screen.dart';
+import 'monitoring_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -23,7 +23,7 @@ class DashboardScreen extends StatelessWidget {
     (Icons.contacts, 'Kontak Darurat', 'Orang terdekat',
         const ContactsScreen()),
     (Icons.monitor_heart, 'Sesi Monitoring', 'Simulasi sesi',
-        const PlaceholderScreen(title: 'Sesi Monitoring')),
+        const MonitoringScreen()),
     ];
 
     return Scaffold(
