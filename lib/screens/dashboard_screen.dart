@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import '../widgets/feature_card.dart';
+import 'education_screen.dart';
 import 'placeholder_screen.dart';
+import 'profile_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
-  void _open(BuildContext context, String title) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (_) => PlaceholderScreen(title: title)),
-    );
+  void _go(BuildContext context, Widget page) {
+    Navigator.push(context, MaterialPageRoute(builder: (_) => page));
   }
 
   @override
   Widget build(BuildContext context) {
-    final items = [
-      (Icons.person, 'Profil', 'Data pengguna'),
-      (Icons.menu_book, 'Edukasi', 'Materi anxiety'),
-      (Icons.chat_bubble, 'Chatbot', 'Tanya NaDy (demo)'),
-      (Icons.contacts, 'Kontak Darurat', 'Orang terdekat'),
-      (Icons.monitor_heart, 'Sesi Monitoring', 'Simulasi sesi'),
+    final items = <(IconData, String, String, Widget)>[
+      (Icons.person, 'Profil', 'Data pengguna', const ProfileScreen()),
+      (Icons.menu_book, 'Edukasi', 'Materi anxiety', const EducationScreen()),
+      (Icons.chat_bubble, 'Chatbot', 'Tanya NaDy (demo)',
+          const PlaceholderScreen(title: 'Chatbot')),
+      (Icons.contacts, 'Kontak Darurat', 'Orang terdekat',
+          const PlaceholderScreen(title: 'Kontak Darurat')),
+      (Icons.monitor_heart, 'Sesi Monitoring', 'Simulasi sesi',
+          const PlaceholderScreen(title: 'Sesi Monitoring')),
     ];
 
     return Scaffold(
@@ -53,7 +55,7 @@ class DashboardScreen extends StatelessWidget {
                       icon: item.$1,
                       title: item.$2,
                       subtitle: item.$3,
-                      onTap: () => _open(context, item.$2),
+                      onTap: () => _go(context, item.$4),
                     ),
                 ],
               ),
