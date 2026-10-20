@@ -28,18 +28,32 @@ class DashboardScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('NaDy',
-            style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.transparent,
-        actions: [
-          IconButton(
-            tooltip: 'Keluar',
-            icon: const Icon(Icons.logout),
-            onPressed: () => logoutToRoleSelection(context),
-          ),
-        ],
-      ),
+      
+appBar: AppBar(
+  title: const Text(
+    'NaDy',
+    style: TextStyle(fontWeight: FontWeight.bold),
+  ),
+  backgroundColor: Colors.transparent,
+  actions: [
+    // Ikon notifikasi
+    IconButton(
+      tooltip: 'Notifikasi',
+      icon: const Icon(Icons.notifications_outlined),
+      onPressed: () {
+        // TODO: Hubungkan ke halaman notifikasi jika tersedia
+      },
+    ),
+
+    // Ikon logout
+    IconButton(
+      tooltip: 'Keluar',
+      icon: const Icon(Icons.logout),
+      onPressed: () => logoutToRoleSelection(context),
+    ),
+  ],
+),
+
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
