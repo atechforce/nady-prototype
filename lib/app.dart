@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/dashboard_screen.dart';
+import 'screens/splash_screen.dart';
 
 class NadyApp extends StatelessWidget {
   const NadyApp({super.key});
@@ -14,7 +14,7 @@ class NadyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF5B9BD5)),
         scaffoldBackgroundColor: const Color(0xFFF5F9FC),
       ),
-      home: const DashboardScreen(),
+      home: const SplashScreen(),
     );
   }
 }
