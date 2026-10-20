@@ -3,8 +3,9 @@ import '../widgets/feature_card.dart';
 import 'chatbot_screen.dart';
 import 'contacts_screen.dart';
 import 'education_screen.dart';
-import 'profile_screen.dart';
 import 'monitoring_screen.dart';
+import 'profile_screen.dart';
+import 'role_selection_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -16,14 +17,14 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = <(IconData, String, String, Widget)>[
-    (Icons.person, 'Profil', 'Data pengguna', const ProfileScreen()),
-    (Icons.menu_book, 'Edukasi', 'Materi anxiety', const EducationScreen()),
-    (Icons.chat_bubble, 'Chatbot', 'Tanya NaDy (demo)',
-        const ChatbotScreen()),
-    (Icons.contacts, 'Kontak Darurat', 'Orang terdekat',
-        const ContactsScreen()),
-    (Icons.monitor_heart, 'Sesi Monitoring', 'Simulasi sesi',
-        const MonitoringScreen()),
+      (Icons.person, 'Profil', 'Data pengguna', const ProfileScreen()),
+      (Icons.menu_book, 'Edukasi', 'Materi anxiety', const EducationScreen()),
+      (Icons.chat_bubble, 'Chatbot', 'Tanya NaDy (demo)',
+          const ChatbotScreen()),
+      (Icons.contacts, 'Kontak Darurat', 'Orang terdekat',
+          const ContactsScreen()),
+      (Icons.monitor_heart, 'Sesi Monitoring', 'Simulasi sesi',
+          const MonitoringScreen()),
     ];
 
     return Scaffold(
@@ -31,6 +32,13 @@ class DashboardScreen extends StatelessWidget {
         title: const Text('NaDy',
             style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
+        actions: [
+          IconButton(
+            tooltip: 'Keluar',
+            icon: const Icon(Icons.logout),
+            onPressed: () => logoutToRoleSelection(context),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
