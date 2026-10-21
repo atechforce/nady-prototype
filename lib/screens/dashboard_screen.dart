@@ -3,6 +3,7 @@ import '../widgets/feature_card.dart';
 import 'chatbot_screen.dart';
 import 'contacts_screen.dart';
 import 'education_screen.dart';
+import 'fcm_test_screen.dart';
 import 'monitoring_screen.dart';
 import 'profile_screen.dart';
 import 'role_selection_screen.dart';
@@ -33,6 +34,11 @@ class DashboardScreen extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         actions: [
+          IconButton(
+            tooltip: 'Uji notifikasi',
+            icon: const Icon(Icons.notifications_active_outlined),
+            onPressed: () => _go(context, const FcmTestScreen()),
+          ),
           IconButton(
             tooltip: 'Keluar',
             icon: const Icon(Icons.logout),

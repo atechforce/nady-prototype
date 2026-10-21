@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import '../models/emergency_contact.dart';
+import '../services/notification_service.dart';
 import 'contacts_screen.dart';
 
 // Konstanta demo (dipercepat agar mudah didemonstrasikan).
@@ -146,6 +147,18 @@ class _MonitoringScreenState extends State<MonitoringScreen> {
     _countdown = null;
     _highStreak = 0;
     _cooldown = kCooldownSeconds;
+
+    // Kirim push notification FCM nyata ke kontak yang memiliki token.
+    NotificationService.sendAnxietyAlert().then((successCount) {
+      if (!mounted) return;
+      if (successCount > 0) {
+        setState(() => _addLog(
+            '[FCM] Notifikasi push terkirim ke $successCount kontak.'));
+      } else {
+        setState(() => _addLog(
+            '[FCM] Tidak ada kontak dengan token FCM terdaftar.'));
+      }
+    });
   }
 
   String _userName() => 'Pengguna NaDy';
