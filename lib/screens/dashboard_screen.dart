@@ -3,10 +3,14 @@ import '../widgets/feature_card.dart';
 import 'chatbot_screen.dart';
 import 'contacts_screen.dart';
 import 'education_screen.dart';
-import 'fcm_test_screen.dart';
 import 'monitoring_screen.dart';
+import 'fcm_test_screen.dart';
+<<<<<<< HEAD
 import 'profile_screen.dart';
 import 'role_selection_screen.dart';
+=======
+import 'fcm_test_screen.dart';
+>>>>>>> fcm-experiment
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -29,23 +33,26 @@ class DashboardScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(x
         title: const Text('NaDy',
             style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: Colors.transparent,
         actions: [
           IconButton(
-            tooltip: 'Uji notifikasi',
-            icon: const Icon(Icons.notifications_active_outlined),
-            onPressed: () => _go(context, const FcmTestScreen()),
-          ),
-          IconButton(
+<<<<<<< HEAD
             tooltip: 'Keluar',
             icon: const Icon(Icons.logout),
             onPressed: () => logoutToRoleSelection(context),
           ),
         ],
       ),
+=======
+            icon: const Icon(Icons.notifications_active_outlined),
+            onPressed: () => _go(context, const FcmTestScreen()),
+    ),
+  ],
+),
+>>>>>>> fcm-experiment
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
