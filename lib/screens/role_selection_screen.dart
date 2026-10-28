@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import '../models/auth_session.dart';
 import 'login_screen.dart';
 import '../widgets/nady_logo.dart';
+import '../services/auth_service.dart';
 
 /// Keluar dari akun dan kembali ke pemilihan peran.
 void logoutToRoleSelection(BuildContext context) {
   AuthSession.logout();
+  AuthService.signOut();
   Navigator.pushAndRemoveUntil(
     context,
     MaterialPageRoute(builder: (_) => const RoleSelectionScreen()),
@@ -25,7 +27,6 @@ class RoleSelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

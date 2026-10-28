@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/auth_session.dart';
+import '../models/user_profile.dart';
+import '../services/auth_service.dart';
 import 'dashboard_screen.dart';
 import 'partner_home_screen.dart';
 
@@ -16,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _email = TextEditingController();
   final _password = TextEditingController();
   bool _hide = true;
+  bool _googleLoading = false;
   String? _error;
 
   bool get _isPatient => widget.role == UserRole.patient;
@@ -36,13 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  void _submit() {
-    if (!_formKey.currentState!.validate()) return;
-    final ok = AuthSession.login(_email.text, _password.text, widget.role);
-    if (!ok) {
-      setState(() => _error = 'Email atau kata sandi salah untuk peran ini.');
-      return;
-    }
+  void _enter() {
     final Widget next =
         _isPatient ? const DashboardScreen() : const PartnerHomeScreen();
     Navigator.pushAndRemoveUntil(
@@ -50,6 +47,42 @@ class _LoginScreenState extends State<LoginScreen> {
       MaterialPageRoute(builder: (_) => next),
       (route) => false,
     );
+  }
+
+  void _submit() {
+    if (!_formKey.currentState!.validate()) return;
+    final ok = AuthSession.login(_email.text, _password.text, widget.role);
+    if (!ok) {
+      setState(() => _error = 'Email atau kata sandi salah untuk peran ini.');
+      return;
+    }
+    _enter();
+  }
+
+  Future<void> _googleLogin() async {
+    setState(() {
+      _googleLoading = true;
+      _error = null;
+    });
+    try {
+      final user = await AuthService.signInWithGoogle();
+      if (user == null) throw Exception('Akun Google tidak ditemukan');
+      final name = user.displayName ?? user.email ?? 'Pengguna';
+      final mail = user.email ?? '';
+      AuthSession.loginExternal(
+          r: widget.role, displayName: name, mail: mail);
+      if (_isPatient) {
+        UserProfile.current.name = name;
+        if (mail.isNotEmpty) UserProfile.current.email = mail;
+      }
+      if (!mounted) return;
+      _enter();
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _error = 'Login Google gagal atau dibatalkan: $e');
+    } finally {
+      if (mounted) setState(() => _googleLoading = false);
+    }
   }
 
   @override
@@ -67,13 +100,40 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                _isPatient
-                    ? 'Masuk sebagai Pasien'
-                    : 'Masuk sebagai Partner',
+                _isPatient ? 'Masuk sebagai Pasien' : 'Masuk sebagai Partner',
                 style:
                     const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: _googleLoading ? null : _googleLogin,
+                  icon: _googleLoading
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.account_circle),
+                  label: const Text('Lanjutkan dengan Google'),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Row(
+                children: [
+                  Expanded(child: Divider()),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    child: Text('atau', style: TextStyle(color: Colors.black54)),
+                  ),
+                  Expanded(child: Divider()),
+                ],
+              ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _email,
                 keyboardType: TextInputType.emailAddress,
@@ -91,8 +151,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   labelText: 'Kata sandi',
                   border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
-                    icon: Icon(
-                        _hide ? Icons.visibility : Icons.visibility_off),
+                    icon:
+                        Icon(_hide ? Icons.visibility : Icons.visibility_off),
                     onPressed: () => setState(() => _hide = !_hide),
                   ),
                 ),

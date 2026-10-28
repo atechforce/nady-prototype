@@ -15,7 +15,7 @@ class DemoAccount {
 }
 
 class AuthSession {
-  // Akun demo untuk prototype. Bukan autentikasi sungguhan.
+  // Akun demo untuk prototype (cadangan untuk penguji).
   static const accounts = <DemoAccount>[
     DemoAccount(
       email: 'pasien@nady.app',
@@ -33,6 +33,7 @@ class AuthSession {
 
   static UserRole? role;
   static String? name;
+  static String? email;
 
   static DemoAccount? demoFor(UserRole r) =>
       accounts.firstWhere((a) => a.role == r);
@@ -43,14 +44,27 @@ class AuthSession {
       if (a.role == r && a.email == e && a.password == password) {
         role = a.role;
         name = a.name;
+        AuthSession.email = a.email;
         return true;
       }
     }
     return false;
   }
 
+  /// Dipakai setelah login Google berhasil.
+  static void loginExternal({
+    required UserRole r,
+    required String displayName,
+    required String mail,
+  }) {
+    role = r;
+    name = displayName;
+    email = mail;
+  }
+
   static void logout() {
     role = null;
     name = null;
+    email = null;
   }
 }
